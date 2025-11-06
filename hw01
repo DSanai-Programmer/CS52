@@ -1,0 +1,37 @@
+#include <iostream>
+#include <string>
+
+int main()
+{
+	std::string userName;
+	int feetComponentOfHeight;
+	int inchesComponentOfHeight;
+	double userWeight;
+
+	std::cout << "Hello, whose BMI shall I calculate? ";
+	std::cin >> userName;
+	// std::cout << userName;
+	std::cout << "Okay first I need " << userName << "'s height. I'll take it in feet and inches." << std::endl;
+	std::cout << "Feet first... ";
+	std::cin >> feetComponentOfHeight;
+	// std::cout << feetComponentOfHeight;
+	std::cout << "Now inches... ";
+	std::cin >> inchesComponentOfHeight;
+	// std::cout << inchesComponentOfHeight;
+	std::cout << "Thanks. Now I need " << userName << "'s weight in pounds." << std::endl;
+	std::cout << "Please enter " << userName << "'s weight... ";
+	std::cin >> userWeight;
+	// std::cout << userWeight;
+	
+	int totalInches = (feetComponentOfHeight * 12) + inchesComponentOfHeight;
+	// std::cout << totalInches;
+	double totalMeters = totalInches / 39.3701;
+	// std::cout << totalMeters;
+	double totalKilos = userWeight / 2.20462;
+	// std::cout << totalKilos;
+
+	double BMI = totalKilos / (totalMeters * totalMeters);
+	std::cout << userName << "'s BMI is " << BMI;
+
+	return 0;
+}
