@@ -1,0 +1,195 @@
+#include <iostream>
+#include <string>
+#include <cstdlib>
+#include <ctime>
+
+// Part 1
+
+// Function: roll
+// Purpose: Roll a 6 sided die
+// Input: None
+// Output: A random number between 1 and 6
+// Side effect: None
+int roll()
+{
+	int diceNumber = (std::rand() % 6) + 1;
+	return diceNumber;
+}
+
+// Function: roll
+// Purpose: Roll the inputted number of dice and store the results in the inputted array
+// Input: 1. A array of integers to eventually hold random numbers between 1 and 6
+//		  2. An integer indicating the size of the array and how many random numbers to generate
+// Output: None
+// Side effect: None
+void roll(int die[], int count)
+{
+	for (int index = 0; index < count; index++)
+	{
+		die[index] = roll();
+	}
+}
+
+// Function: displayRoll
+// Purpose: Uses COUT to display numbers in the array
+// Input: 1. A array of integers
+//		  2. An integer indicating the size of the array
+// Output: None
+// Side effect: Uses COUT so numbers appear as [ 1, 5, 3, 3, 5 ]
+//				Assuming the array had 5 numbers in it
+void displayRoll(int die[], int count)
+{
+	for (int index = 0; index < count; index++)
+	{
+		std::cout << die[index];
+		if (index != count - 1)
+		{
+			std::cout << ", ";
+		}
+	}
+}
+
+// Function: computeBetResult
+// Purpose: Determine how much was won with a Chuck-a-Luck roll 
+// Input: 1. A 3 integer array of random numbers between 1 and 6
+//		  2. The size of the prior array, though it should be 3
+//		  3. The amount of money the user is betting
+//		  4. The number (between 1 and 6) that the user bet on
+// Output: The amount of money the user won, based on the chuck-a-luck rules
+//		   Check the assignment write up for the rules
+// Side effect: Will use COUT to display how many dice the user matched
+int computeBetResult(int die[], int dieCount, int betAmount, int betNumber)
+{
+	int payoutReturn = 0;
+	int numberOccurrence = 0;
+	for (int index = 0; index < 3; index++)
+	{
+		if (betNumber == die[index])
+			numberOccurrence += 1;
+	}
+
+	if (numberOccurrence == 0)
+		payoutReturn == 0;
+	else if (numberOccurrence == 1)
+		payoutReturn = 1 * betAmount + betAmount;
+	else if (numberOccurrence == 2)
+		payoutReturn = 3 * betAmount + betAmount;
+	else if (numberOccurrence == 3)
+		payoutReturn = 10 * betAmount + betAmount;
+
+	return payoutReturn;
+}
+
+int main()
+{
+	// PART 2
+
+	std::srand(std::time(0));
+	const int count = 3;
+	int die[count];
+	int money = 100;
+	std::cout << "Enter a seed (-1 for no seed): ";
+	int seed = 0;
+	std::cin >> seed;
+	if (seed < -1)
+	{
+		std::srand(std::time(0));
+		// std::cout << std::rand();
+	}
+	else
+	{
+		std::srand(seed);
+		// std::cout << std::rand();
+	}
+	std::cout << std::endl;
+	std::cout << "STEP RIGHT UP PLAY SOME CHUCK-A-LUCK!" << std::endl;
+	std::cout << "You have $" << money << std::endl;
+	
+	std::string goAgain = "y";
+	// Set almost all of the code in a while loop, only way to break it is if user says "n" or "N"
+	while (goAgain == "y" || goAgain == "Y")
+	{
+		int betAmount = 0;
+		while (betAmount <= 0 || betAmount > money)
+		{
+			std::cout << "Enter a bet amount: $";
+			std::cin >> betAmount;
+			// The only valid bets are above 0 and equal to or less than the amount of money the user has
+			if (betAmount <= 0 || betAmount > money)
+			{
+				std::cout << "Invalid bet. Please enter an amount from $1 to $" << money << std::endl;
+			}
+		}
+		// betNumber represents the die number the user is guessing on
+		int betNumber = 0;
+		while (betNumber <= 0 || betNumber > 6)
+		{
+			std::cout << "What number do you want to bet on (1-6): ";
+			std::cin >> betNumber;
+			if (betNumber <= 0 || betNumber > 6)
+			{
+				std::cout << "Invalid number. Must be 1 to 6." << std::endl;
+			}
+		}
+		std::cout << "You bet $" << betAmount << " on " << betNumber << std::endl;
+		money -= betAmount;
+		// std::cout << money;
+		std::cout << "You rolled:" << std::endl;
+		// std::cout << roll();
+		roll(die, count);
+		std::cout << "[ ";
+		displayRoll(die, count);
+		std::cout << " ]" << std::endl;
+
+		int numberOccurrence = 0;
+		for (int index = 0; index < count; index++)
+		{
+			if (betNumber == die[index])
+				numberOccurrence += 1;
+		}
+		std::cout << "You matched " << numberOccurrence << " dice!" << std::endl;
+		
+		int cbrResult = computeBetResult(die, count, betAmount, betNumber);
+		if (numberOccurrence > 0)
+		{
+			std::cout << "You win!" << std::endl;;
+			money += cbrResult;
+		}
+
+		else
+		{
+			std::cout << "You lose :(" << std::endl;
+		}
+		// No need to subtract money because that is done earlier in the code; therefore, the money will already be less
+		std::cout << "You now have $" << money << std::endl;
+		std::cout << std::endl;
+		
+		if (money > 0)
+		{
+			std::cout << "Would you like to go again (y/n): ";
+			std::cin >> goAgain;
+			if (goAgain == "n" || goAgain == "N")
+			{
+				std::cout << "You ended up with $" << money;
+			}
+			// This while loop is necessary for if the user inputs something other than y/Y/n/N when asked to go again
+			while (goAgain != "y" && goAgain != "Y" && goAgain != "n" && goAgain != "N")
+			{
+				std::cout << "Invalid option. Enter a single character, either \"y\" or \"n\"" << std::endl;
+				std::cout << "Would you like to go again (y/n): ";
+				std::cin >> goAgain;
+				if (goAgain == "n" || goAgain == "N")
+					std::cout << "You ended up with $" << money;
+			}
+		}
+		else
+		{
+			std::cout << "You ran out of money!" << std::endl;
+			std::cout << "You ended up with $0";
+			// Breaks the loop without the user choosing to
+			goAgain = "n";
+		}
+	}
+
+	return 0;
+}
