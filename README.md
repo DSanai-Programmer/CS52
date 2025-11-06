@@ -1,2 +1,1 @@
-# CS52
-C++ class
+Language: C++
