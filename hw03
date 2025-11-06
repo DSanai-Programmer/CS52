@@ -1,0 +1,103 @@
+#include <iostream>
+#include <string>
+
+// Must include input output streams and the string libraries; may need to add more later
+
+int main()
+
+{
+
+	// Part 1
+
+	std::string months[12] =
+	{ 
+		"January", 
+		"February",
+		"March",
+		"April",
+		"May",
+		"June",
+		"July",
+		"August",
+		"September",
+		"October",
+		"November",
+		"December"
+	};
+
+	// The indices will be filled in with user input, ranging from index 0 to index 11
+	double userIncome[12] =
+	{
+	};
+
+	double maxIncomeForTaxBracket[6] =
+	{
+		11600,
+		35550,
+		53375,
+		91425,
+		51775,
+		365625
+	};
+
+	double taxPercent[7] =
+	{
+		0.1,
+		0.12,
+		0.22,
+		0.24,
+		0.32,
+		0.35,
+		0.37
+	};
+
+	
+	// Part 2
+
+	for (int i = 0; i < 12; i++)
+	{
+		std::cout << "Enter income for " << months[i] << ": $";
+		std::cin >> userIncome[i];
+		// std::cout << userIncome[i] << std::endl;
+	}
+
+
+	// Part 3
+
+	std::cout << "******************************" << std::endl;
+
+	double userIncomeTotal = 0.0;
+	for (int i = 0; i < 12; i++)
+	{
+		userIncomeTotal += userIncome[i];
+	}
+
+	std::cout << "Your total income is $" << userIncomeTotal << std::endl;
+
+
+	// Part 4
+
+	double tax = 0.0;
+	if (userIncomeTotal > 0 && userIncomeTotal < 11600)
+		tax = userIncomeTotal * 0.10;
+	if (userIncomeTotal > 11600 && userIncomeTotal < 47150)
+		tax = (11600 * 0.10) + (userIncomeTotal-11600)*0.12;
+	if (userIncomeTotal > 47150 && userIncomeTotal < 100525)
+		tax = (11600 * 0.10) + (47150 - 11600) * 0.12 + (userIncomeTotal - 47150)*0.22;
+	if (userIncomeTotal > 100525 && userIncomeTotal < 191950)
+		tax = 5426 + (100525 - 47150)*0.22 + (userIncomeTotal - 100525)*0.24;
+	if (userIncomeTotal > 191950 && userIncomeTotal < 243725)
+		tax = 17168.50 + (191950 - 100525) * 0.24 + (userIncomeTotal - 191950) * 0.32;
+	if (userIncomeTotal > 243725 && userIncomeTotal < 609350)
+		tax = 39110.50 + (243725 - 191950) * 0.32 + (userIncomeTotal - 243725) * 0.35;
+	if (userIncomeTotal > 609350)
+		tax = 55679.50 + (609350 - 243725) * 0.35 + (userIncomeTotal - 609350) * 0.37;
+
+	double taxRate = (tax / userIncomeTotal) * 100;
+	std::cout << "You owe taxes in the amount of $" << tax << std::endl;
+	std::cout << "Your effective tax rate is " << taxRate << "%";
+	
+	// Output for userIncomeTotal, tax, and taxRate match those of the prompts for the respective user input
+
+	return 0;
+}
